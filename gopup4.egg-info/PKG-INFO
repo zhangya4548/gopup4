@@ -1,3 +1,28 @@
+Metadata-Version: 2.1
+Name: gopup4
+Version: 0.4.0
+Summary: gopup4
+Home-page: https://github.com/zhangya4548/gopup4
+Author: zhangya4548
+Author-email: 23585472@qq.com
+Maintainer: zhangya4548
+Maintainer-email: 23585472@qq.com
+License: MIT
+Platform: all
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: pandas
+Requires-Dist: demjson
+Requires-Dist: jsonpath
+Requires-Dist: bs4
+Requires-Dist: Pillow
+Requires-Dist: matplotlib
+Requires-Dist: xlrd
+Requires-Dist: pyexecjs
+Requires-Dist: pyquery
+Requires-Dist: tqdm
+Requires-Dist: pycryptodome
+
 ## gopup (python3)
 
 #### 建议安装方法
