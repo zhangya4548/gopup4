@@ -51,7 +51,7 @@ def http_get(url: str, cookies: str, cipher_text: str = "") -> str:
     if cipher_text:
         _headers["Cipher-Text"] = cipher_text
     try:
-        response = requests.get(url, headers=_headers, timeout=30)
+        response = requests.get(url, headers=_headers, timeout=3)
     except requests.Timeout:
         raise GopupError(ErrorCode.NETWORK_ERROR)
     if response.status_code != 200:

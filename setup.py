@@ -6,7 +6,7 @@ import os
 
 URL = 'https://github.com/zhangya4548/gopup4'
 NAME = 'gopup4'
-VERSION = '0.4.1'
+VERSION = '0.4.2'
 DESCRIPTION = 'gopup4'
 if os.path.exists('README.md'):
     with open('README.md', encoding='utf-8') as f:
