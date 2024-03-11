@@ -7,6 +7,7 @@ GoPup 是基于 Python 的开源金融数据接口库, 目的是实现对金融�
 百度指数
 """
 from gopup4.index.index_baidu import (
+    baidu_search_index_v2,
     baidu_search_index,
     baidu_info_index,
     baidu_media_index,

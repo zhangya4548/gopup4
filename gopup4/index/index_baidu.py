@@ -277,6 +277,23 @@ def baidu_search_index(word, start_date, end_date, cookie, type="all"):
     except Exception as e:
         return None
 
+def baidu_search_index_v2(word, start_date, end_date, cookie, type="all"):
+    # 百度搜索数据
+    try:
+        keywords_list = [[word]]
+        encrypt_json = get_encrypt_json(
+            start_date=start_date,
+            end_date=end_date,
+            keywords=keywords_list,
+            type='search',
+            area=0,
+            cookies=cookie
+        )
+
+        return encrypt_json['data']
+    except Exception as e:
+        return None
+
 
 def baidu_info_index(word, start_date, end_date, cookie):
     # 百度资讯指数
