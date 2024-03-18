@@ -59,6 +59,40 @@ def http_get(url: str, cookies: str, cipher_text: str = "") -> str:
     return response.text
 
 
+def http_get_v2(url: str, cookies: str, cipher_text: str = "", proxy: dict = None) -> str:
+    """
+    发送get请求, 程序中所有的get都是调这个方法
+    如果想使用多cookies抓取, 和请求重试功能
+
+    # 使用示例
+    proxy_config = {
+        "http": "http://your_proxy_ip:your_proxy_port",
+        "https": "https://your_proxy_ip:your_proxy_port"
+    }
+    response_text = http_get("http://example.com", "your_cookie_string", proxy=proxy_config)
+
+    :param url: 目标URL
+    :param cookies: 请求cookie
+    :param cipher_text: 可选，加密文本
+    :param proxy: 可选，代理设置，格式为 {"http": "http://代理IP:端口", "https": "https://代理IP:端口"}
+    :return: 响应文本
+    """
+    _headers = headers.copy()  # 假设headers已经在某处定义
+    _headers['Cookie'] = cookies
+    if cipher_text:
+        _headers["Cipher-Text"] = cipher_text
+
+    proxies = proxy if proxy is not None else {}
+
+    try:
+        response = requests.get(url, headers=_headers, timeout=30, proxies=proxies)
+    except requests.Timeout:
+        raise GopupError(ErrorCode.NETWORK_ERROR)
+    if response.status_code != 200:
+        raise GopupError(ErrorCode.NETWORK_ERROR)
+    return response.text
+
+
 def get_cipher_text(keyword: str) -> str:
     byte_list = [
         b"\x00", b"\x01", b"\x02", b"\x03", b"\x04", b"\x05", b"\x06", b"\x07",
@@ -94,7 +128,8 @@ def get_encrypt_json(
     keywords: List[List[str]],
     type: str,
     area: int,
-    cookies: str
+    cookies: str,
+    proxy_config: dict = None
 ) -> Dict:
     pre_url_map = {
         'search': 'http://index.baidu.com/api/SearchApi/index?',
@@ -122,7 +157,16 @@ def get_encrypt_json(
         }
     url = pre_url + urlencode(request_args)
     cipher_text = get_cipher_text(keywords[0][0])
-    html = http_get(url, cookies, cipher_text=cipher_text)
+
+    # 自定义代理
+    # proxy_config = {
+    #     "http": "http://your_proxy_ip:your_proxy_port",
+    #     "https": "https://your_proxy_ip:your_proxy_port"
+    # }
+    # response_text = http_get("http://example.com", "your_cookie_string", proxy=proxy_config)
+    proxies = proxy_config if proxy_config is not None else {}
+
+    html = http_get_v2(url, cookies, cipher_text=cipher_text, proxy=proxies)
     datas = json.loads(html)
     if datas['status'] == 10000:
         raise GopupError(ErrorCode.NO_LOGIN)
