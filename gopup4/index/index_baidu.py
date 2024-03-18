@@ -277,9 +277,11 @@ def baidu_search_index(word, start_date, end_date, cookie, type="all"):
     except Exception as e:
         return None
 
-def baidu_search_index_v2(word, start_date, end_date, cookie, type="all"):
+def baidu_search_index_v2(word, start_date, end_date, cookie, proxy_config: dict = None):
     # 百度搜索数据
     try:
+        proxies = proxy_config if proxy_config is not None else {}
+
         keywords_list = [[word]]
         encrypt_json = get_encrypt_json(
             start_date=start_date,
@@ -287,7 +289,8 @@ def baidu_search_index_v2(word, start_date, end_date, cookie, type="all"):
             keywords=keywords_list,
             type='search',
             area=0,
-            cookies=cookie
+            cookies=cookie,
+            proxy_config=proxies
         )
 
         return encrypt_json['data']
